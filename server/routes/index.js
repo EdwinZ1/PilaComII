@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express',author: 'Edwin Zacatelco' ,appName: 
-  'WebApp', company: 'Awsome Software'});
+  'WebApp', company: 'Awesome Company'});
 });
 
 router.get('/greeting',function(req,res,next){
