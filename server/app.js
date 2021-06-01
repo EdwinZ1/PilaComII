@@ -1,14 +1,18 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
-import createError from "http-errors";
-import express from "express";
-import path from "path";
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import indexRouter from "@s-route/index";
-import usersRouter from "@s-route/users";
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import indexRouter from '@s-routes/index';
+import usersRouter from '@s-routes/users';
+
+// Importing configurations
+import configTemplateEngine from '@s-config/template-engine';
 
 // Webpack Modules
-import webpack from "webpack";
+import webpack from 'webpack';
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import webpackConfig from "../webpack.dev.config";
@@ -50,17 +54,17 @@ if (env === "development") {
 }
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "hbs");
+configTemplateEngine(app);
 
-app.use(logger("dev"));
+
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
