@@ -1,9 +1,10 @@
 /* eslint-disable prettier/prettier */
 // Importando a winston
-import winston, { format, transport } from 'winston';
+import winston, { format } from 'winston';
 import appRoot from 'app-root-path';
+
 // Componenetes para crear el formato personalizado
-const { conbine, timestamp,json,colorize,uncolorize, printf } = format;
+const { timestamp,json,colorize,uncolorize, printf, combine } = format;
 //
 // Perfil de color para el log
 const colors = {
@@ -18,13 +19,13 @@ winston.addColors(colors);
 
 
 // Formato de consola
-const myFormat = conbine (
+const myFormat = combine (
     colorize({all: true}),
     timestamp(),
     printf((info) => `${info.timestamp} ${info.level}: ${info.message}`)
 );
 // Formato para los archivos de Log
-const myFileFormat = conbine (
+const myFileFormat = combine (
     uncolorize(),
     timestamp(),
     json()
@@ -68,7 +69,7 @@ const logger = winston.createLogger({
         new winston.transports.File(options.infoFile),
         new winston.transports.File(options.warnFile),
         new winston.transports.File(options.errorFile),
-        new winston.transports.File(options.console),
+        new winston.transports.Console(options.console),
     ],
     exitOnError: false, // No finaliza en Excepciones Manejadas
 
