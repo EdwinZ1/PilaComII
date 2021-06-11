@@ -1,19 +1,12 @@
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express',author: 'Edwin Zacatelco' ,appName: 
-  'WebApp', company: 'Awesome Company'});
-});
-
-router.get('/greeting',function(req,res,next){
-  res.status(200).json({message:'Hola Campeon de la FullStack web'})
-
-})
-
-router.get('/saludo',function(req,res,next){
-  res.send('Saludos desde Marte <-0->')
-
-})
-module.exports = router;
+// Importando el Router de Home.js
+import homeRouter from './home';
+// Importando Router de user.js
+import userRouter from './users';
+// Agregando las rutas a la aplicacion
+const addRoutes = (app) => {
+  app.use('/', homeRouter);
+  app.use('/user', userRouter);
+};
+export default {
+  addRoutes,
+};

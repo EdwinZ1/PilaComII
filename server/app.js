@@ -5,32 +5,31 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import winston from '@server/config/winston';
-
-import indexRouter from '@s-routes/index';
-import usersRouter from '@s-routes/users';
+// Importando el router principal
+import router from '@s-routes/index';
 
 // Importing configurations
 import configTemplateEngine from '@s-config/template-engine';
 
 // Webpack Modules
 import webpack from 'webpack';
-import webpackDevMiddleware from "webpack-dev-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
-import webpackConfig from "../webpack.dev.config";
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import webpackConfig from '../webpack.dev.config';
 
 // Consultar el modo en que se esta ejecutando la aplicacion
-const env = process.env.NODE_ENV || "development";
+const env = process.env.NODE_ENV || 'development';
 const app = express();
 
 // Verificando el modo de ejecucion de la aplicacion
-if (env === "development") {
-  console.log("> Executing in Development Mode: Webpack Hot reloading");
+if (env === 'development') {
+  console.log('> Executing in Development Mode: Webpack Hot reloading');
   // Paso1. Agregando la ruta del HMR
   // reload= true: habilita la recarga del frontend cuando hay cambios en el codigo
   // fuente del front end
   // timeout=1000: es el tiempo de espera entre careg y recarega de la pagina
   webpackConfig.entry = [
-    "webpack-hot-middleware/client?reload=true&timeout=1000",
+    'webpack-hot-middleware/client?reload=true&timeout=1000',
     webpackConfig.entry,
   ];
 
@@ -46,12 +45,12 @@ if (env === "development") {
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath: webpackConfig.output.publicPath,
-    })
+    }),
   );
   // Paso 5. Agregar el webpack Hot Middleware
   app.use(webpackHotMiddleware(compiler));
 } else {
-  console.log("> Ejecucion en modo produccion");
+  console.log('> Ejecucion en modo produccion');
 }
 
 // view engine setup
@@ -63,8 +62,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Instalando el enrutador principal
+// a Express
+router.addRoutes(app);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
