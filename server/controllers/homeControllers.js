@@ -11,7 +11,7 @@ const greeting = (req, res) => {
 };
 const about = (req, res) => {
   res.render('home/about', {
-    title: 'Acerca de Projnote',
+    appVersion: '1.0.0',
   });
 };
 export default {
